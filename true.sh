@@ -40,6 +40,9 @@ ufw enable
 # ipv4 cookies enabling
 echo 1 > /proc/sys/net/ipv4/tcp_syncookies
 
+# disabling ssh root login 
+sed -i 's/PermitRootLogin yes/PermitRootLogin no' /etc/ssh/sshd_config
+
 # Deleting prohibited files 
 find /home -regextype posix-extended -regex '.*\.(midi|mid|mod|mp3|mp2|mpa|abs|mpega|au|snd|wav|aiff|aif|sid|flac|ogg|mpeg|mpg|mpe|dl|movie|movi|mv|iff|anim5|anim3|anim7|avi|vfw|avx|fli|flc|mov|qt|spl|swf|dcr|dir|dxr|rpm|rm|smi|ra|ram|rv|wmv|asf|asx|wma|wax|wmv|wmx|3gp|mov|mp4|flv|m4v|xlsx|pptx|docx|csv|tiff|tif|rs|iml|gif|jpeg|jpg|jpe|png|rgb|xwd|xpm|ppm|pbm|pgm|pcx|ico|svg|svgz|pot|xml|pl)$' -delete
 echo "All prohibited files SHOULD be deleted."
@@ -58,5 +61,4 @@ echo "All prohibited files SHOULD be deleted."
 echo "All prohibited applications are removed."
 # updating applications
     apt-get upgrade 
-    apt install unattended-upgrades -y
-    apt install firefox
+    apt install unattended
