@@ -8,16 +8,18 @@ then
   exit
 fi
 
-# Setting a password
+# Setting a password for all users
 
 echo "Setting Password..."
 
 pw=T2@Cybertaipan
+
 for user in `cat /etc/passwd | grep -v "nologin\|false\|sync" | awk '{split($0,a,":");print a[1]}'`; 
 do 
-    echo $pw > pword.txt
-    cat pword.txt | xargs -i /bin/bash -c "(echo '{}'; echo '{}') | sudo passwd $user"
-done 
+    echo $pw > thepword.txt
+    cat thepword.txt | xargs -i /bin/bash -c "(echo '{}'; echo '{}') | sudo passwd $user"
+done
+rm thepword.txt 
 
 echo "The New  Password is T2@Cybertaipan. Please note down."
 sleep 1
@@ -39,6 +41,13 @@ ufw enable
 
 # ipv4 cookies enabling
 echo 1 > /proc/sys/net/ipv4/tcp_syncookies
+sed -i 's/net.ipv4.tcp_syncookies=0/net.ipv4.tcp_syncookies=1/' /etc/sysctl.d/10-network-security.conf 
+# ignore ipv4 requests
+    
+# ftp service disabling
+systemctl stop -pureftpd
+
+# disabling guest account
 
 # disabling ssh root login 
 sed -i 's/PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config
@@ -60,6 +69,5 @@ echo "All prohibited files SHOULD be deleted."
 
 echo "All prohibited applications are removed."
 # updating applications
-    apt-get upgrade 
+    sudo apt-get upgrade 
     apt install unattended-upgrades -y
-    apt install firefox
