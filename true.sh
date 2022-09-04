@@ -42,8 +42,14 @@ ufw enable
 # ipv4 cookies enabling
 echo 1 > /proc/sys/net/ipv4/tcp_syncookies
 sed -i 's/net.ipv4.tcp_syncookies=0/net.ipv4.tcp_syncookies=1/' /etc/sysctl.d/10-network-security.conf 
+sed -i 's/#net.ipv4.tcp_syncookies=1/net.ipv4.tcp_syncookies=1/' /etc/sysctl.conf 
+
 # ignore ipv4 requests
-    
+sed -i '#net.ipv4.conf.all.accept_redirects = 0/net.ipv4.conf.all.accept_redirects = 0/' /etc/sysctl.conf 
+sed -i '#net.ipv6.conf.all.accept_redirects = 0/net.ipv6.conf.all.accept_redirects = 0/' /etc/sysctl.conf
+sed  -i '#net.ipv4.conf.default.accept_redirects = 0/net.ipv4.conf.default.accept_redirects = 0/' /etc/sysctl.conf 
+sed -i '#net.ipv6.conf.default.accept_redirects = 0/net.ipv6.conf.default.accept_redirects = 0/' /etc/sysctl.conf
+
 # ftp service disabling
 systemctl stop -pureftpd
 
@@ -55,6 +61,11 @@ sed -i 's/PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config
 # Deleting prohibited files 
 find /home -regextype posix-extended -regex '.*\.(midi|mid|mod|mp3|mp2|mpa|abs|mpega|au|snd|wav|aiff|aif|sid|flac|ogg|mpeg|mpg|mpe|dl|movie|movi|mv|iff|anim5|anim3|anim7|avi|vfw|avx|fli|flc|mov|qt|spl|swf|dcr|dir|dxr|rpm|rm|smi|ra|ram|rv|wmv|asf|asx|wma|wax|wmv|wmx|3gp|mov|mp4|flv|m4v|xlsx|pptx|docx|csv|tiff|tif|rs|iml|gif|jpeg|jpg|jpe|png|rgb|xwd|xpm|ppm|pbm|pgm|pcx|ico|svg|svgz|pot|xml|pl)$' -delete
 echo "All prohibited files SHOULD be deleted."
+
+# updating applications
+    apt-get update 
+    sudo apt-get upgrade 
+    apt install unattended-upgrades -y
 
 # Removing prohibited applications:
 
@@ -68,6 +79,3 @@ echo "All prohibited files SHOULD be deleted."
     rm applications.txt
 
 echo "All prohibited applications are removed."
-# updating applications
-    sudo apt-get upgrade 
-    apt install unattended-upgrades -y
