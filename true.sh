@@ -51,7 +51,15 @@ sed  -i '#net.ipv4.conf.default.accept_redirects = 0/net.ipv4.conf.default.accep
 sed -i '#net.ipv6.conf.default.accept_redirects = 0/net.ipv6.conf.default.accept_redirects = 0/' /etc/sysctl.conf
 
 # ftp service disabling
-systemctl stop -pureftpd
+
+# need to check whether this works
+read -p "Do you want ftp to be disabled?" ftpvar
+if ["$ftpvar" == "yes"] || ["$ftpvar" == "Yes"] || [$ftpvar == "y"] || [$ftpvar == "Y"]
+then 
+    systemctl stop -pureftpd
+else 
+    echo "ftp shall be left alone."
+fi
 
 # disabling guest account
 
