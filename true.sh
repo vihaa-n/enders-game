@@ -19,8 +19,8 @@ done
 rm thepword.txt 
 
 echo "The New  Password is $pw"
-
-apt-get -V -y install firefox hardinfo chkrootkit iptables portsentry lynis ufw gufw sysv-rc-conf nessus clamav
+apt-get install firefox -y 
+apt install ufw -y 
 ufw enable 
 apt-get update 
     #read -p "Do you want to download Openssh?" sshvar
@@ -53,6 +53,7 @@ sed -i 's/#net.ipv6.conf.default.accept_redirects = 0/net.ipv6.conf.default.acce
 sysctl -p 
 # ftp service disabling
 
+# need to check whether this works
 #DOES NOT WORK DO MANUALLY
 
 #read -p "Do you want ftp to be disabled? " ftpvar
@@ -64,13 +65,18 @@ sysctl -p
 
 # disabling guest account
 
-# disabling ssh root login (I tested in the training images and it works)
+# disabling ssh root login (I tested in the training images)
 sed -i 's/PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config
 
+echo "If it says directory not found, ssh probably isnt in the computer"
+
+sleep 1 
 # Deleting prohibited files 
 find /home -regextype posix-extended -regex '.*\.(midi|mid|mod|mp3|mp2|mpa|abs|mpega|au|snd|wav|aiff|aif|sid|flac|ogg|mpeg|mpg|mpe|dl|movie|movi|mv|iff|anim5|anim3|anim7|avi|vfw|avx|fli|flc|mov|qt|spl|swf|dcr|dir|dxr|rpm|rm|smi|ra|ram|rv|wmv|asf|asx|wma|wax|wmv|wmx|3gp|mov|mp4|flv|m4v|xlsx|pptx|docx|csv|tiff|tif|rs|iml|gif|jpeg|jpg|jpe|png|rgb|xwd|xpm|ppm|pbm|pgm|pcx|ico|svg|svgz|pot|xml|pl)$' -delete
 echo "All prohibited files should be deleted."
 
+# updating applications
+    
 
 # Removing prohibited applications:
 
@@ -84,4 +90,3 @@ echo "All prohibited files should be deleted."
     rm applications.txt
 
 echo "All prohibited applications are removed."
-
